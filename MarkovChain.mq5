@@ -52,4 +52,6 @@ void OnStart()
     }
     
     ArrayPrint(transitionMatrix);
+    
+    // Testing
 }
