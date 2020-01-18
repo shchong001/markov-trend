@@ -1,15 +1,17 @@
+#define NUMDAYS 20
+
 void OnStart()
 {
     double close[];
-    int barsCopied = CopyClose(NULL, PERIOD_D1, 0, 20, close);
+    int barsCopied = CopyClose(NULL, PERIOD_D1, 0, NUMDAYS-1, close);
     if(barsCopied <= 0) Print("Error");
     
-    double closeDifference[19];
-    int closeState[19];
+    double closeDifference[NUMDAYS-1];
+    int closeState[NUMDAYS-1];
     int closeStateMatrix[3][3];
     ArrayInitialize(closeStateMatrix, 0);
     
-    for(int i = 0; i < 19; i++)
+    for(int i = 0; i < NUMDAYS-1; i++)
     {
         closeDifference[i] = close[i + 1] - close[i];
         if(closeDifference[i] > 0.100) closeState[i] = 0;
