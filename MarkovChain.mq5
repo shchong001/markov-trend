@@ -51,7 +51,28 @@ void OnStart()
         transitionMatrix[2][i] = closeStateMatrix[2][i] / downTotal;
     }
     
-    ArrayPrint(transitionMatrix);
+    // fileName ...
     
-    // Testing
+    if(!FileIsExist("USDJPY20d.csv"))
+    {
+        int fileHandle = FileOpen("USDJPY20d.csv", FILE_READ|FILE_WRITE|FILE_CSV);
+        FileSeek(fileHandle, 0, SEEK_END);
+        
+        FileWrite(fileHandle, "Date",
+            "UpUp", "UpZeroplus", "UpDown",
+            "ZeroplusUp", "ZeroplusZeroplus", "ZeroplusDown",
+            "DownUp", "DownZeroplus", "DownDown");
+        
+        FileClose(fileHandle);
+    }
+    
+    int fileHandle = FileOpen("USDJPY20d.csv", FILE_READ|FILE_WRITE|FILE_CSV);
+    FileSeek(fileHandle, 0, SEEK_END);
+    
+    FileWrite(fileHandle, iTime(NULL, PERIOD_D1, 0),
+        transitionMatrix[0][0], transitionMatrix[1][0], transitionMatrix[2][0],
+        transitionMatrix[0][1], transitionMatrix[1][1], transitionMatrix[2][1],
+        transitionMatrix[0][2], transitionMatrix[1][2], transitionMatrix[2][2]);
+    
+    FileClose(fileHandle);
 }
