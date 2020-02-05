@@ -1,2 +1,2 @@
-# markovtrend
-Forecasting market trend with markov chain
+# markov-trend
+Analysis Of Market Trend Using Markov Chain
