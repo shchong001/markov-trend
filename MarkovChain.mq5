@@ -1,5 +1,3 @@
-
-
 void OnStart()
 {
     int numBars = Bars(NULL, PERIOD_D1);
@@ -8,19 +6,14 @@ void OnStart()
     
     for(int barIndex = 0; barIndex < numBars; barIndex++)
     {
-        
         double close[];
         int barsCopied = CopyClose(NULL, PERIOD_D1, barIndex, 20, close);
         if(barsCopied <= 0) Print("Error");
         
-        
         double closeDifference[19];
-        
         int closeState[19];
         int closeStateMatrix[3][3];
-        ArrayInitialize(closeState, 0);
         ArrayInitialize(closeStateMatrix, 0);
-        
         
         for(int i = 0; i < 19; i++)
         {
@@ -51,9 +44,7 @@ void OnStart()
                 }
             }
         }
-        Print("Here");
-        ArrayPrint(closeDifference);
-        ArrayPrint(closeState);
+
         double upTotal = closeStateMatrix[0][0] + closeStateMatrix[0][1] + closeStateMatrix[0][2];
         double zeroPlusTotal = closeStateMatrix[1][0] + closeStateMatrix[1][1] + closeStateMatrix[1][2];
         double downTotal = closeStateMatrix[2][0] + closeStateMatrix[2][1] + closeStateMatrix[2][2];
@@ -71,11 +62,9 @@ void OnStart()
             else transitionMatrix[2][i] = closeStateMatrix[2][i] / downTotal;
         }
         
-        string fileName = Symbol() + IntegerToString(20) + "d123.csv";
+        string fileName = Symbol() + "20d.csv";
         if(!FileIsExist(fileName))
         {
-            
-            
             int fileHandle = FileOpen(fileName, FILE_READ|FILE_WRITE|FILE_CSV);
             FileSeek(fileHandle, 0, SEEK_END);
             
@@ -93,12 +82,7 @@ void OnStart()
         FileWrite(fileHandle, iTime(NULL, PERIOD_D1, barIndex),
             transitionMatrix[0][0], transitionMatrix[0][1], transitionMatrix[0][2],
             transitionMatrix[1][0], transitionMatrix[1][1], transitionMatrix[1][2],
-            transitionMatrix[2][0], transitionMatrix[2][1], transitionMatrix[2][2],
-            "",
-            closeStateMatrix[0][0], closeStateMatrix[0][1], closeStateMatrix[0][2],
-            closeStateMatrix[1][0], closeStateMatrix[1][1], closeStateMatrix[1][2],
-            closeStateMatrix[2][0], closeStateMatrix[2][1], closeStateMatrix[2][2],
-            upTotal + zeroPlusTotal + downTotal);
+            transitionMatrix[2][0], transitionMatrix[2][1], transitionMatrix[2][2]);
         
         FileClose(fileHandle);
     }    
